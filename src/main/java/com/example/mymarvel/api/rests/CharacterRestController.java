@@ -3,6 +3,8 @@ package com.example.mymarvel.api.rests;
 
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/public/character")
+@RequestMapping("/v1/public/character")
+@RequiredArgsConstructor
 public class CharacterRestController {
-    private CharacterService characterService;
+    @Autowired
+    private final CharacterService characterService;
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Character> getCharacter(@PathVariable("id") Long characterId) {
         if (characterId == null) {

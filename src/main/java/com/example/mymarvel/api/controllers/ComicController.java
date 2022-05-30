@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/public/comic")
+@RequestMapping("/v1/public/comic")
 @RequiredArgsConstructor
 
 public class ComicController {
