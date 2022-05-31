@@ -1,5 +1,6 @@
 package com.example.mymarvel.domain.comic;
 
+import com.example.mymarvel.api.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,9 @@ public class ComicService {
     private final ComicRepository comicRepository;
 
     public Comic getComic(Long id) {
+        if (id == null) {
+            throw new ObjectNotFoundException();
+        }
         return comicRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 

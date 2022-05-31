@@ -7,8 +7,8 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -33,14 +33,16 @@ public class Character {
     )
     List<Comic> comics;
 
-//    public void addCharacterToComic(Comic comic) {
-//        if (comics == null) {
-//            comics = new ArrayList<>();
-//        }
-//        comics.add(comic);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Character character = (Character) o;
+        return name.equals(character.name) && comics.equals(character.comics);
+    }
 
-
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, comics);
+    }
 }

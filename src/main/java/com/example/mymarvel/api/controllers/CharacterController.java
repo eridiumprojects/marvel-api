@@ -2,6 +2,7 @@ package com.example.mymarvel.api.controllers;
 
 import com.example.mymarvel.api.dtos.CharacterDto;
 import com.example.mymarvel.api.dtos.ComicDto;
+import com.example.mymarvel.api.exceptions.CharacterNotFoundException;
 import com.example.mymarvel.api.mappers.CharacterMapper;
 import com.example.mymarvel.api.mappers.ComicMapper;
 import com.example.mymarvel.domain.character.Character;
@@ -20,14 +21,11 @@ import java.util.List;
 @RequestMapping("/v1/public/character")
 @RequiredArgsConstructor
 public class CharacterController {
-
     public final CharacterService characterService;
     public final CharacterMapper characterMapper;
     public final ComicMapper comicMapper;
-
     public final ComicService comicService;
-
-    @GetMapping("/")
+    @GetMapping(value = "/")
     public List<CharacterDto> getAll() {
         List<Character> allCharacters = characterService.getAll();
         return characterMapper.toDtos(allCharacters);
@@ -35,12 +33,18 @@ public class CharacterController {
 
     @GetMapping("/{characterId}")
     public CharacterDto get(@PathVariable Long characterId) {
+        if (characterId == null) {
+            throw new CharacterNotFoundException();
+        }
         Character character = characterService.getCharacter(characterId);
         return characterMapper.toDto(character);
     }
 
     @GetMapping("/{characterId}/comic")
     public ComicDto getComic(@PathVariable Long characterId) {
+        if (characterId == null) {
+            throw new CharacterNotFoundException();
+        }
         Comic comic = comicService.getComic(characterId);
         return comicMapper.toDto(comic);
     }

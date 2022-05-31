@@ -1,5 +1,6 @@
 package com.example.mymarvel.domain.character;
 
+import com.example.mymarvel.api.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,10 @@ import java.util.List;
 public class CharacterService {
     private final CharacterRepository characterRepository;
 
-    public Character getCharacter(Long id) {
+    public Character getCharacter(Long id)  {
+        if (id == null) {
+            throw new ObjectNotFoundException();
+        }
         return characterRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
