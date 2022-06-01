@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.LazyCollection;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,6 +33,7 @@ public class Comic {
             ,joinColumns = @JoinColumn(name = "comic_id")
             ,inverseJoinColumns = @JoinColumn(name = "character_id")
     )
+            @Lazy
     List<Character> characters;
 
     @Override

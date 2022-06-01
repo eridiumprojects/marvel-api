@@ -4,3 +4,6 @@ spring:
     password: toor
     username: postgres
     url: jdbc:postgresql://localhost:5432/
+  jpa:
+    hibernate:
+      ddl-auto: update
