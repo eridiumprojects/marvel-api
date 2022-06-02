@@ -10,42 +10,43 @@ import com.example.mymarvel.domain.character.CharacterService;
 import com.example.mymarvel.domain.comic.Comic;
 import com.example.mymarvel.domain.comic.ComicService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/public/comic")
+@RequestMapping("/v1/public/comics")
 @RequiredArgsConstructor
 public class ComicController {
     public final ComicService comicService;
     public final ComicMapper comicMapper;
     public final CharacterService characterService;
     public final CharacterMapper characterMapper;
-    @GetMapping("/")
+    @GetMapping(value = "/", produces = "application/json")
     public List<ComicDto> getAll() {
         List<Comic> allComic = comicService.getAll();
         return comicMapper.toDtos(allComic);
     }
 
-    @GetMapping("/{comicId}")
-    public ComicDto get(@PathVariable Long comicId) {
-        if (comicId == null) {
-            throw new ComicNotFoundException();
-        }
+    @GetMapping(value = "/{comicId}", produces = "application/json")
+    public ComicDto getComic(@PathVariable Long comicId) {
         Comic comic = comicService.getComic(comicId);
         return comicMapper.toDto(comic);
     }
 
-    @GetMapping(value = "/{comicId}/character")
-    public CharacterDto getCharacter(@PathVariable Long comicId){
-        if (comicId == null) {
-            throw new ComicNotFoundException();
+    @GetMapping(value = "/{comicId}/characters", produces = "application/json")
+    public List<CharacterDto> getCharacters(@PathVariable Long comicId){
+        return characterMapper.toDtos(comicService.getCharacters(comicId));
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<Comic> saveComic(@RequestBody Comic comic) {
+        if (comic == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Character character = characterService.getCharacter(comicId);
-        return characterMapper.toDto(character);
+        this.comicService.save(comic);
+        return new ResponseEntity<>(comic,HttpStatus.OK);
     }
 }

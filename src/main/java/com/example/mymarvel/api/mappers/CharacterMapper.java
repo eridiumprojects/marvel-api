@@ -23,5 +23,4 @@ public class CharacterMapper {
         return characters.stream().map(this::toDto).toList();
     }
 
-
 }
