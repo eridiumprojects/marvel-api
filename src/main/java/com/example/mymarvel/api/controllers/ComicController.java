@@ -1,8 +1,9 @@
 package com.example.mymarvel.api.controllers;
 
 import com.example.mymarvel.api.dtos.CharacterDto;
+import com.example.mymarvel.api.dtos.CharacterView;
 import com.example.mymarvel.api.dtos.ComicDto;
-import com.example.mymarvel.api.exceptions.ComicNotFoundException;
+import com.example.mymarvel.api.dtos.ComicView;
 import com.example.mymarvel.api.mappers.CharacterMapper;
 import com.example.mymarvel.api.mappers.ComicMapper;
 import com.example.mymarvel.domain.character.Character;
@@ -10,10 +11,9 @@ import com.example.mymarvel.domain.character.CharacterService;
 import com.example.mymarvel.domain.comic.Comic;
 import com.example.mymarvel.domain.comic.ComicService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,28 +25,28 @@ public class ComicController {
     public final CharacterService characterService;
     public final CharacterMapper characterMapper;
     @GetMapping(value = "/", produces = "application/json")
-    public List<ComicDto> getAll() {
+    public List<ComicView> getAll() {
         List<Comic> allComic = comicService.getAll();
-        return comicMapper.toDtos(allComic);
+        List<ComicDto> allComicDto = comicMapper.toDtos(allComic);
+        return comicMapper.toViews(allComicDto);
     }
 
     @GetMapping(value = "/{comicId}", produces = "application/json")
-    public ComicDto getComic(@PathVariable Long comicId) {
+    public ComicView getComic(@PathVariable Long comicId) {
         Comic comic = comicService.getComic(comicId);
-        return comicMapper.toDto(comic);
+        ComicDto comicDto = comicMapper.toDto(comic);
+        return comicMapper.toView(comicDto);
     }
 
     @GetMapping(value = "/{comicId}/characters", produces = "application/json")
-    public List<CharacterDto> getCharacters(@PathVariable Long comicId){
-        return characterMapper.toDtos(comicService.getCharacters(comicId));
+    public List<CharacterView> getCharacters(@PathVariable Long comicId){
+        List<Character> characters = comicService.getCharacters(comicId);
+        List<CharacterDto> charactersDto = characterMapper.toDtos(characters);
+        return characterMapper.toViews(charactersDto);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<Comic> saveComic(@RequestBody Comic comic) {
-        if (comic == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        this.comicService.save(comic);
-        return new ResponseEntity<>(comic,HttpStatus.OK);
+    public void saveComic(@Valid @RequestBody ComicDto comicDto) {
+        comicService.save(comicMapper.toComic(comicDto));
     }
 }

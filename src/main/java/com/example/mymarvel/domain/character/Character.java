@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @Accessors(chain = true)
 @Entity
-@Table(name = "Characters")
+@Table(name = " Characters")
 @ToString
 public class Character {
     @Id

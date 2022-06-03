@@ -2,7 +2,6 @@ package com.example.mymarvel.domain.comic;
 
 import com.example.mymarvel.api.exceptions.CharacterNotFoundException;
 import com.example.mymarvel.api.exceptions.ComicNotFoundException;
-import com.example.mymarvel.api.exceptions.ObjectNotFoundException;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterRepository;
 import lombok.RequiredArgsConstructor;

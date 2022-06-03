@@ -1,14 +1,11 @@
 package com.example.mymarvel.domain.character;
 
 import com.example.mymarvel.api.exceptions.CharacterNotFoundException;
-import com.example.mymarvel.api.exceptions.ObjectNotFoundException;
 import com.example.mymarvel.domain.comic.Comic;
 import com.example.mymarvel.domain.comic.ComicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.function.LongUnaryOperator;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +22,7 @@ public class CharacterService {
         if (characters.size() == 0) {
             throw new CharacterNotFoundException("Characters not found...");
         }
-        return characterRepository.findAll();
+        return characters;
     }
 
     public void save(Character character) {

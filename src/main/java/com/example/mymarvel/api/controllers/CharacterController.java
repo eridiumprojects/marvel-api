@@ -1,8 +1,9 @@
 package com.example.mymarvel.api.controllers;
 
 import com.example.mymarvel.api.dtos.CharacterDto;
+import com.example.mymarvel.api.dtos.CharacterView;
 import com.example.mymarvel.api.dtos.ComicDto;
-import com.example.mymarvel.api.exceptions.CharacterNotFoundException;
+import com.example.mymarvel.api.dtos.ComicView;
 import com.example.mymarvel.api.mappers.CharacterMapper;
 import com.example.mymarvel.api.mappers.ComicMapper;
 import com.example.mymarvel.domain.character.Character;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,30 +26,31 @@ public class CharacterController {
     public final CharacterMapper characterMapper;
     public final ComicMapper comicMapper;
     public final ComicService comicService;
-    @GetMapping(value = "/",produces = "application/json")
-    public List<CharacterDto> getAll() {
+
+    @GetMapping(value = "/", produces = "application/json")
+    public List<CharacterView> getAll() {
         List<Character> allCharacters = characterService.getAll();
-        return characterMapper.toDtos(allCharacters);
+        List<CharacterDto> allCharactersDto = characterMapper.toDtos(allCharacters);
+        return characterMapper.toViews(allCharactersDto);
     }
 
     @GetMapping(value = "/{characterId}", produces = "application/json")
-    public CharacterDto getCharacter(@PathVariable Long characterId) {
+    public CharacterView getCharacter(@PathVariable Long characterId) {
         Character character = characterService.getCharacter(characterId);
-        return characterMapper.toDto(character);
+        CharacterDto characterDto = characterMapper.toDto(character);
+        return characterMapper.toView(characterDto);
     }
 
     @GetMapping(value = "/{characterId}/comics", produces = "application/json")
-    public List<ComicDto> getComics(@PathVariable Long characterId) {
-        return comicMapper.toDtos(characterService.getComics(characterId));
+    public List<ComicView> getComics(@PathVariable Long characterId) {
+        List<Comic> comics = characterService.getComics(characterId);
+        List<ComicDto> comicsDto = comicMapper.toDtos(comics);
+        return comicMapper.toViews(comicsDto);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json")
-    //Дописать проверку имени на валидацию (допустимость использования только цифр)
-    //если встречаются буквы, кинуть Unprocessable entity 422 exception
-    public void saveCharacter(@RequestBody Character character) {
-        if (character == null) {
-            throw new CharacterNotFoundException();
-        }
+    public void saveCharacter(@Valid @RequestBody CharacterDto characterDto) {
+        Character character = characterMapper.toCharacter(characterDto);
         characterService.save(character);
     }
 
