@@ -26,17 +26,18 @@ public class ComicService {
     public List<Comic> getAll() {
         List<Comic> comics = comicRepository.findAll();
         if (comics.size() == 0) {
-            throw new ComicNotFoundException("Comics not found...");
+            return comics;
         }
         return comicRepository.findAll();
     }
 
     public List<Character> getCharacters(Long id) {
         List<Character> characters = characterRepository.getCharactersByComicsId(id);
-        if (characters.size() == 0) {
-            throw new CharacterNotFoundException("List is empty.");
-        }
         return characters;
+    }
+
+    public void saveList(List<Comic> comics) {
+        comicRepository.saveAll(comics);
     }
 
 }

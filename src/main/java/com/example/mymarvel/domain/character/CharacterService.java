@@ -19,9 +19,6 @@ public class CharacterService {
 
     public List<Character> getAll() {
         List<Character> characters = characterRepository.findAll();
-        if (characters.size() == 0) {
-            throw new CharacterNotFoundException("Characters not found...");
-        }
         return characters;
     }
 
@@ -31,9 +28,6 @@ public class CharacterService {
 
     public List<Comic> getComics(Long id) {
         List<Comic> comics = comicRepository.getComicsByCharacterId(id);
-        if (comics.size() == 0) {
-            throw new CharacterNotFoundException("List is empty.");
-        }
         return comics;
     }
 }

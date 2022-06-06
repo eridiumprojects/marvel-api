@@ -25,28 +25,27 @@ public class ComicController {
     public final CharacterService characterService;
     public final CharacterMapper characterMapper;
     @GetMapping(value = "/", produces = "application/json")
+
     public List<ComicView> getAll() {
         List<Comic> allComic = comicService.getAll();
-        List<ComicDto> allComicDto = comicMapper.toDtos(allComic);
-        return comicMapper.toViews(allComicDto);
+        return comicMapper.toViews(allComic);
     }
 
     @GetMapping(value = "/{comicId}", produces = "application/json")
     public ComicView getComic(@PathVariable Long comicId) {
         Comic comic = comicService.getComic(comicId);
-        ComicDto comicDto = comicMapper.toDto(comic);
-        return comicMapper.toView(comicDto);
+        return comicMapper.toView(comic);
     }
 
     @GetMapping(value = "/{comicId}/characters", produces = "application/json")
     public List<CharacterView> getCharacters(@PathVariable Long comicId){
         List<Character> characters = comicService.getCharacters(comicId);
-        List<CharacterDto> charactersDto = characterMapper.toDtos(characters);
-        return characterMapper.toViews(charactersDto);
+        return characterMapper.toViews(characters);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json")
+    @PostMapping(value = "", consumes = "application/json")
     public void saveComic(@Valid @RequestBody ComicDto comicDto) {
+
         comicService.save(comicMapper.toComic(comicDto));
     }
 }

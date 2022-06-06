@@ -33,7 +33,7 @@ public class Comic {
             ,joinColumns = @JoinColumn(name = "comic_id")
             ,inverseJoinColumns = @JoinColumn(name = "character_id")
     )
-            @Lazy
+    @Lazy
     List<Character> characters;
 
     @Override
