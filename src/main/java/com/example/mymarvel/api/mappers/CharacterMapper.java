@@ -2,6 +2,7 @@ package com.example.mymarvel.api.mappers;
 
 import com.example.mymarvel.api.dtos.CharacterDto;
 import com.example.mymarvel.api.dtos.CharacterView;
+import com.example.mymarvel.api.dtos.UpdatedCharacter;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.comic.Comic;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class CharacterMapper {
         if (characterDto == null) {
             return null;
         }
-        Character character =  new Character();
+        Character character = new Character();
         character.setName(characterDto.getName());
         character.setComics(Collections.singletonList(new Comic().setId(characterDto.getComicId())));
         return character;

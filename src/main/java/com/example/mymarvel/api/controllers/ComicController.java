@@ -1,9 +1,6 @@
 package com.example.mymarvel.api.controllers;
 
-import com.example.mymarvel.api.dtos.CharacterDto;
-import com.example.mymarvel.api.dtos.CharacterView;
-import com.example.mymarvel.api.dtos.ComicDto;
-import com.example.mymarvel.api.dtos.ComicView;
+import com.example.mymarvel.api.dtos.*;
 import com.example.mymarvel.api.mappers.CharacterMapper;
 import com.example.mymarvel.api.mappers.ComicMapper;
 import com.example.mymarvel.domain.character.Character;
@@ -41,12 +38,21 @@ public class ComicController {
 
     @GetMapping(value = "/{comicId}/characters", produces = "application/json")
     public List<CharacterView> getCharacters(@PathVariable Long comicId){
-        List<Character> characters = characterRepository.getCharactersByComicsId(comicId);
-        return characterMapper.toViews(characters);
+        return characterMapper.toViews(characterRepository.getCharactersByComicsId(comicId));
     }
 
     @PostMapping(value = "", consumes = "application/json")
     public void saveComic(@Valid @RequestBody ComicDto comicDto) {
         comicService.save(comicMapper.toComic(comicDto));
+    }
+
+    @DeleteMapping(value = "delete/{comicId}", produces = "application/json")
+    public void deleteComic(@PathVariable Long comicId) {
+        comicService.delete(comicService.getComic(comicId));
+    }
+
+    @PutMapping(value = "/update", produces = "application/json")
+    public void updateComic(@Valid @RequestBody UpdatedComic updatedComic) {
+        comicService.update(updatedComic);
     }
 }

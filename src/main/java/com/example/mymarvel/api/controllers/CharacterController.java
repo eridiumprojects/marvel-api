@@ -1,9 +1,6 @@
 package com.example.mymarvel.api.controllers;
 
-import com.example.mymarvel.api.dtos.CharacterDto;
-import com.example.mymarvel.api.dtos.CharacterView;
-import com.example.mymarvel.api.dtos.ComicDto;
-import com.example.mymarvel.api.dtos.ComicView;
+import com.example.mymarvel.api.dtos.*;
 import com.example.mymarvel.api.mappers.CharacterMapper;
 import com.example.mymarvel.api.mappers.ComicMapper;
 import com.example.mymarvel.domain.character.Character;
@@ -37,19 +34,29 @@ public class CharacterController {
 
     @GetMapping(value = "/{characterId}", produces = "application/json")
     public CharacterView getCharacter(@PathVariable Long characterId) {
-        Character character = characterService.getCharacter(characterId);
-        return characterMapper.toView(character);
+        return characterMapper.toView(characterService.getCharacter(characterId));
     }
 
     @GetMapping(value = "/{characterId}/comics", produces = "application/json")
     public List<ComicView> getComics(@PathVariable Long characterId) {
-        List<Comic> comics = comicRepository.getComicsByCharacterId(characterId);
-        return comicMapper.toViews(comics);
+        return comicMapper.toViews(comicRepository.getComicsByCharacterId(characterId));
     }
 
     @PostMapping(value = "", consumes = "application/json")
     public void saveCharacter(@Valid @RequestBody CharacterDto characterDto) {
         characterService.save(characterMapper.toCharacter(characterDto));
+    }
+
+    @DeleteMapping(value = "/delete/{characterId}", produces = "application/json")
+    public void deleteCharacter(@PathVariable Long characterId) {
+        characterService.delete(characterService.getCharacter(characterId));
+    }
+
+    @PutMapping(value = "/update", produces = "application/json")
+    public void updateCharacter(@Valid @RequestBody UpdatedCharacter updatedCharacter) {
+//        Character character =  characterMapper.toUpdatedCharacter(updatedCharacter);
+        characterService.update(updatedCharacter);
+
     }
 
 }

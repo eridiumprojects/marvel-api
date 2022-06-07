@@ -12,4 +12,6 @@ public interface CharacterRepository extends JpaRepository<Character,Long> {
     @Query("select c from character c join c.comics co where co.id = :pId")
     List<Character> getCharactersByComicsId(@Param("pId") Long id);
 
+    Optional<Character> findByName(String name);
+
 }

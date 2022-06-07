@@ -1,5 +1,6 @@
 package com.example.mymarvel.domain.comic;
 
+import com.example.mymarvel.api.dtos.UpdatedComic;
 import com.example.mymarvel.exceptions.ComicAlreadyExistException;
 import com.example.mymarvel.exceptions.ComicNotFoundException;
 import com.example.mymarvel.domain.character.Character;
@@ -36,10 +37,26 @@ public class ComicService {
         return characterRepository.getCharactersByComicsId(getComic(id).getId());
     }
 
-    public void isNameUnique(Comic comic) {
+    public boolean isNameUnique(Comic comic) {
         Optional<Comic> comicOptional = comicRepository.findByName(comic.getName());
         if (comicOptional.isPresent()) {
-            throw new ComicAlreadyExistException("Pososi");
+            throw new ComicAlreadyExistException("Unique failed error.");
         }
+        return true;
     }
-}
+    public void delete(Comic comic) {
+        comicRepository.delete(comic);
+    }
+
+    public void update(UpdatedComic updatedComic) {
+        Comic comic = comicRepository.
+                findById(updatedComic.getId()).
+                orElseThrow(() -> new ComicNotFoundException("Not found...")).
+                setName(updatedComic.getNewName());
+
+       if (isNameUnique(comic)) {
+           comicRepository.save(comic);
+       }
+       }
+
+    }
