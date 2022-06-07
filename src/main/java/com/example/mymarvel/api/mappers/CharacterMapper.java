@@ -12,7 +12,6 @@ import java.util.List;
 
 @Component
 public class CharacterMapper {
-
     public CharacterView toView(Character character) {
         if (character == null) {
             return null;

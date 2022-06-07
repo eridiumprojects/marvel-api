@@ -41,7 +41,6 @@ public class CharacterController {
         return characterMapper.toView(character);
     }
 
-
     @GetMapping(value = "/{characterId}/comics", produces = "application/json")
     public List<ComicView> getComics(@PathVariable Long characterId) {
         List<Comic> comics = comicRepository.getComicsByCharacterId(characterId);
@@ -52,7 +51,5 @@ public class CharacterController {
     public void saveCharacter(@Valid @RequestBody CharacterDto characterDto) {
         characterService.save(characterMapper.toCharacter(characterDto));
     }
-
-
 
 }

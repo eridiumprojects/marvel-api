@@ -14,9 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CharacterService {
     private final CharacterRepository characterRepository;
-    private final ComicRepository comicRepository;
     private final ComicService comicService;
-
     public Character getCharacter(Long id)  {
         return characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException("Not found..."));
     }
@@ -31,7 +29,4 @@ public class CharacterService {
         characterRepository.save(character);
     }
 
-    public List<Comic> getComics(Long id) {
-        return comicRepository.getComicsByCharacterId(id);
-    }
 }

@@ -4,7 +4,7 @@ import com.example.mymarvel.exceptions.ComicAlreadyExistException;
 import com.example.mymarvel.exceptions.ComicNotFoundException;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterRepository;
-//import com.example.mymarvel.events.ComicSaveEvent;
+import com.example.mymarvel.events.ComicSaveEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -19,13 +19,12 @@ public class ComicService {
     private final CharacterRepository characterRepository;
     private final ApplicationEventPublisher publisher;
 
-
     public Comic getComic(Long id) {
         return comicRepository.findById(id).orElseThrow(() -> new ComicNotFoundException("Not found..."));
     }
 
     public void save(Comic comic) {
-//        publisher.publishEvent(new ComicSaveEvent(comic));
+        publisher.publishEvent(new ComicSaveEvent(comic));
         comicRepository.save(comic);
     }
 
