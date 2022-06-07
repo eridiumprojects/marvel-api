@@ -9,14 +9,15 @@ import org.hibernate.annotations.LazyCollection;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
-@Accessors(chain=true)
-@Entity
-@Table(name = "Comic")
+@Accessors(chain = true)
+@Entity(name = "comic")
+@Table(name = "comics")
 @ToString
 public class Comic {
     @Id
@@ -24,17 +25,17 @@ public class Comic {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name",unique = true, nullable = false,length = 100)
+    @Column(name = "name", unique = true, nullable = false, length = 100)
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "comic_section"
-            ,joinColumns = @JoinColumn(name = "comic_id")
-            ,inverseJoinColumns = @JoinColumn(name = "character_id")
+            name = "comic_character__fk",
+            joinColumns = @JoinColumn(name = "comic_id"),
+            inverseJoinColumns = @JoinColumn(name = "character_id")
     )
     @Lazy
-    List<Character> characters;
+    List<Character> characters = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

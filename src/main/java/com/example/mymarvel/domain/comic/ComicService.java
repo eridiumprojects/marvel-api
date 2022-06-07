@@ -1,43 +1,46 @@
 package com.example.mymarvel.domain.comic;
 
-import com.example.mymarvel.api.exceptions.CharacterNotFoundException;
-import com.example.mymarvel.api.exceptions.ComicNotFoundException;
+import com.example.mymarvel.exceptions.ComicAlreadyExistException;
+import com.example.mymarvel.exceptions.ComicNotFoundException;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterRepository;
+//import com.example.mymarvel.events.ComicSaveEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ComicService {
     private final ComicRepository comicRepository;
     private final CharacterRepository characterRepository;
+    private final ApplicationEventPublisher publisher;
+
 
     public Comic getComic(Long id) {
         return comicRepository.findById(id).orElseThrow(() -> new ComicNotFoundException("Not found..."));
     }
 
     public void save(Comic comic) {
+//        publisher.publishEvent(new ComicSaveEvent(comic));
         comicRepository.save(comic);
     }
 
     public List<Comic> getAll() {
-        List<Comic> comics = comicRepository.findAll();
-        if (comics.size() == 0) {
-            return comics;
-        }
         return comicRepository.findAll();
     }
 
     public List<Character> getCharacters(Long id) {
-        List<Character> characters = characterRepository.getCharactersByComicsId(id);
-        return characters;
+        return characterRepository.getCharactersByComicsId(getComic(id).getId());
     }
 
-    public void saveList(List<Comic> comics) {
-        comicRepository.saveAll(comics);
+    public void isNameUnique(Comic comic) {
+        Optional<Comic> comicOptional = comicRepository.findByName(comic.getName());
+        if (comicOptional.isPresent()) {
+            throw new ComicAlreadyExistException("Pososi");
+        }
     }
-
 }

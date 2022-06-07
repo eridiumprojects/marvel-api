@@ -1,7 +1,5 @@
 package com.example.mymarvel.api.mappers;
 
-import com.example.mymarvel.api.dtos.CharacterDto;
-import com.example.mymarvel.api.dtos.CharacterView;
 import com.example.mymarvel.api.dtos.ComicDto;
 import com.example.mymarvel.api.dtos.ComicView;
 import com.example.mymarvel.domain.character.Character;
@@ -33,20 +31,17 @@ public class ComicMapper {
             return null;
         }
         Comic comic = new Comic();
-        comic.setId(comicDto.getId());
         comic.setName(comicDto.getName());
         comic.setCharacters(getCharacters(comicDto));
         return comic;
     }
 
     private List<Character> getCharacters(ComicDto comicDto) {
-        return comicDto.getComicNames().stream().map(this::getCharacter).toList();
+        return comicDto.getCharacterNames().stream().map(this::getCharacter).toList();
     }
 
     private Character getCharacter(String s) {
         return new Character().setName(s);
     }
-
-
 
 }

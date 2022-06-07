@@ -1,4 +1,4 @@
-package com.example.mymarvel.api.exceptions;
+package com.example.mymarvel.exceptions;
 
 public class ComicNotFoundException extends ObjectNotFoundException {
     public ComicNotFoundException() {

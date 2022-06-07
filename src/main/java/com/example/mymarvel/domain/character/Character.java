@@ -8,14 +8,15 @@ import lombok.experimental.Accessors;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Accessors(chain = true)
-@Entity
-@Table(name = "Characters")
+@Entity(name = "character")
+@Table(name = "characters")
 @ToString
 public class Character {
     @Id
@@ -28,13 +29,12 @@ public class Character {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "comic_section"
-            ,joinColumns = @JoinColumn(name = "character_id")
-            ,inverseJoinColumns = @JoinColumn(name = "comic_id")
+            name = "comic_character__fk",
+            joinColumns = @JoinColumn(name = "character_id"),
+            inverseJoinColumns = @JoinColumn(name = "comic_id")
     )
     @Lazy
-
-    List<Comic> comics;
+    private List<Comic> comics = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

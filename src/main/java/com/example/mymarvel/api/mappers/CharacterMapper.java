@@ -3,9 +3,11 @@ package com.example.mymarvel.api.mappers;
 import com.example.mymarvel.api.dtos.CharacterDto;
 import com.example.mymarvel.api.dtos.CharacterView;
 import com.example.mymarvel.domain.character.Character;
+import com.example.mymarvel.domain.comic.Comic;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -22,6 +24,9 @@ public class CharacterMapper {
     }
 
     public List<CharacterView> toViews(List<Character> characters) {
+        if (characters == null){
+            return Collections.emptyList();
+        }
         return characters.stream().map(this::toView).toList();
     }
 
@@ -30,8 +35,8 @@ public class CharacterMapper {
             return null;
         }
         Character character =  new Character();
-        character.setId(characterDto.getId());
         character.setName(characterDto.getName());
+        character.setComics(Collections.singletonList(new Comic().setId(characterDto.getComicId())));
         return character;
     }
 

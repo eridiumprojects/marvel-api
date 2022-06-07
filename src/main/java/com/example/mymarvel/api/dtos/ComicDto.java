@@ -1,17 +1,17 @@
 package com.example.mymarvel.api.dtos;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 @Validated
 public class ComicDto {
-    private Long id;
     @NotEmpty
     private String name;
-    @NotEmpty
-    private List<String> comicNames;
+    @NotNull
+    private List<String> characterNames;
 }
