@@ -29,16 +29,16 @@ public class CharacterService {
     public void save(Character character) {
         Comic comic = comicService.getComic(character.getComics().get(0).getId());
         character.setComics(Collections.singletonList(comic));
+        isNameUnique(character);
         characterRepository.save(character);
     }
 
-    public boolean isNameUnique(Character character) {
+    public void isNameUnique(Character character) {
         Optional<Character> characterOptional = characterRepository.findByName(character.getName());
 
         if (characterOptional.isPresent()) {
             throw new ComicAlreadyExistException("Unique failed error.");
         }
-        return true;
     }
     public void delete(Character character) {
         characterRepository.delete(character);
@@ -49,10 +49,8 @@ public class CharacterService {
                 findById(updatedCharacter.getId()).
                 orElseThrow(() -> new CharacterNotFoundException("Not found...")).
                 setName(updatedCharacter.getNewName());
-
-        if (isNameUnique(character)) {
-            characterRepository.save(character);
+        isNameUnique(character);
+        characterRepository.save(character);
         }
     }
 
-}

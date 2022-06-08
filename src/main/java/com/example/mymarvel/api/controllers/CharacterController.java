@@ -54,7 +54,6 @@ public class CharacterController {
 
     @PutMapping(value = "/update", produces = "application/json")
     public void updateCharacter(@Valid @RequestBody UpdatedCharacter updatedCharacter) {
-//        Character character =  characterMapper.toUpdatedCharacter(updatedCharacter);
         characterService.update(updatedCharacter);
 
     }

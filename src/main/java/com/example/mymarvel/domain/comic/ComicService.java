@@ -26,6 +26,7 @@ public class ComicService {
 
     public void save(Comic comic) {
         publisher.publishEvent(new ComicSaveEvent(comic));
+        isNameUnique(comic);
         comicRepository.save(comic);
     }
 
@@ -37,13 +38,13 @@ public class ComicService {
         return characterRepository.getCharactersByComicsId(getComic(id).getId());
     }
 
-    public boolean isNameUnique(Comic comic) {
+    public void isNameUnique(Comic comic) {
         Optional<Comic> comicOptional = comicRepository.findByName(comic.getName());
         if (comicOptional.isPresent()) {
             throw new ComicAlreadyExistException("Unique failed error.");
         }
-        return true;
     }
+
     public void delete(Comic comic) {
         comicRepository.delete(comic);
     }
@@ -53,10 +54,7 @@ public class ComicService {
                 findById(updatedComic.getId()).
                 orElseThrow(() -> new ComicNotFoundException("Not found...")).
                 setName(updatedComic.getNewName());
-
-       if (isNameUnique(comic)) {
-           comicRepository.save(comic);
-       }
-       }
-
+        isNameUnique(comic);
+        comicRepository.save(comic);
     }
+}
