@@ -3,7 +3,6 @@ package com.example.mymarvel.domain.comic;
 import com.example.mymarvel.api.dtos.UpdatedComic;
 import com.example.mymarvel.exceptions.ComicAlreadyExistException;
 import com.example.mymarvel.exceptions.ComicNotFoundException;
-import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterRepository;
 import com.example.mymarvel.events.ComicSaveEvent;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +31,6 @@ public class ComicService {
 
     public List<Comic> getAll() {
         return comicRepository.findAll();
-    }
-
-    public List<Character> getCharacters(Long id) {
-        return characterRepository.getCharactersByComicsId(getComic(id).getId());
     }
 
     public void isNameUnique(Comic comic) {
