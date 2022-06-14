@@ -1,0 +1,6 @@
+embedded:
+  posgtresql:
+    enabled: false
+    port: 5432
+    user: admin
+    password: toor

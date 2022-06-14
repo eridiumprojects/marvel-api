@@ -1,12 +1,14 @@
 package com.example.mymarvel.api.controllers;
 
-import com.example.mymarvel.api.dtos.*;
+import com.example.mymarvel.api.dtos.CharacterDto;
+import com.example.mymarvel.api.dtos.CharacterView;
+import com.example.mymarvel.api.dtos.ComicView;
+import com.example.mymarvel.api.dtos.UpdatedCharacter;
 import com.example.mymarvel.api.mappers.CharacterMapper;
 import com.example.mymarvel.api.mappers.ComicMapper;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterRepository;
 import com.example.mymarvel.domain.character.CharacterService;
-import com.example.mymarvel.domain.comic.Comic;
 import com.example.mymarvel.domain.comic.ComicRepository;
 import com.example.mymarvel.domain.comic.ComicService;
 import lombok.RequiredArgsConstructor;
