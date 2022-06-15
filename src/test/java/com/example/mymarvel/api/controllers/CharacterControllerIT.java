@@ -4,6 +4,7 @@ import com.example.mymarvel.api.dtos.CharacterDto;
 import com.example.mymarvel.api.dtos.UpdatedCharacter;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterRepository;
+import com.example.mymarvel.domain.character.CharacterService;
 import com.example.mymarvel.exceptions.CharacterNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +25,8 @@ class CharacterControllerIT {
     private CharacterController characterController;
     @Autowired
     private CharacterRepository characterRepository;
+    @Autowired
+    public CharacterService characterService;
 
 
     public CharacterControllerIT() {
@@ -64,18 +67,14 @@ class CharacterControllerIT {
         assertTrue(flag);
     }
 
-//    @Test
-//    void updateCharacter() {
-//        boolean flag = false;
-//        UpdatedCharacter updatedCharacter = new UpdatedCharacter();
-//        updatedCharacter.setNewName("Papa");
-//        updatedCharacter.setId(29L);
-//        characterController.updateCharacter(updatedCharacter);
-//        if (!(updatedCharacter.getNewName().equals("Papa"))) {
-//            flag = true;
-//        }
-//        assertTrue(flag);
-//        //создать два объекта и проверить их по-символьно
-//        //после апдпейта
-//    }
+    @Test
+    void updateCharacter() {
+        UpdatedCharacter updatedCharacter = new UpdatedCharacter();
+        updatedCharacter.setId(28L);
+        updatedCharacter.setNewName("Papa");
+        characterController.updateCharacter(updatedCharacter);
+        Character character = characterRepository.findByName(updatedCharacter.getNewName()).
+                orElseThrow(() -> new CharacterNotFoundException("Not found..."));
+        assertEquals(character.getName(),updatedCharacter.getNewName());
+    }
 }

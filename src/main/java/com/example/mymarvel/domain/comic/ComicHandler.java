@@ -14,7 +14,7 @@ public class ComicHandler {
     @EventListener(ComicSaveEvent.class)
     public void checkName(ComicSaveEvent event){
         Comic comic = (Comic) event.getSource();
-        comicService.isNameUnique(comic);
+        comicService.isNameUnique(comic.getName());
     }
 
 }

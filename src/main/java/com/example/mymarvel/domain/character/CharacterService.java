@@ -17,7 +17,8 @@ import java.util.Optional;
 public class CharacterService {
     private final CharacterRepository characterRepository;
     private final ComicService comicService;
-    public Character getCharacter(Long id)  {
+
+    public Character getCharacter(Long id) {
         return characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException("Not found..."));
     }
 
@@ -29,17 +30,18 @@ public class CharacterService {
     public void save(Character character) {
         Comic comic = comicService.getComic(character.getComics().get(0).getId());
         character.setComics(Collections.singletonList(comic));
-        isNameUnique(character);
+        isNameUnique(character.getName());
         characterRepository.save(character);
     }
 
-    public void isNameUnique(Character character) {
-        Optional<Character> characterOptional = characterRepository.findByName(character.getName());
+    public void isNameUnique(String name) {
+        Optional<Character> characterOptional = characterRepository.findByName(name);
 
         if (characterOptional.isPresent()) {
             throw new ComicAlreadyExistException("Unique failed error.");
         }
     }
+
     public void delete(Character character) {
         characterRepository.delete(character);
     }
@@ -47,10 +49,10 @@ public class CharacterService {
     public void update(UpdatedCharacter updatedCharacter) {
         Character character = characterRepository.
                 findById(updatedCharacter.getId()).
-                orElseThrow(() -> new CharacterNotFoundException("Not found...")).
-                setName(updatedCharacter.getNewName());
-        isNameUnique(character);
+                orElseThrow(() -> new CharacterNotFoundException("Not found..."));
+        isNameUnique(updatedCharacter.getNewName());
+        character.setName(updatedCharacter.getNewName());
         characterRepository.save(character);
-        }
     }
+}
 

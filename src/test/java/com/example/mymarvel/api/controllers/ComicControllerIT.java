@@ -1,6 +1,7 @@
 package com.example.mymarvel.api.controllers;
 
 import com.example.mymarvel.api.dtos.ComicDto;
+import com.example.mymarvel.api.dtos.UpdatedComic;
 import com.example.mymarvel.domain.comic.Comic;
 import com.example.mymarvel.domain.comic.ComicRepository;
 import com.example.mymarvel.exceptions.ComicNotFoundException;
@@ -73,7 +74,14 @@ class ComicControllerIT {
         assertTrue(flag);
     }
 
-//    @Test
-//    void updateComic() {
-//    }
+    @Test
+    void updateComic() {
+        UpdatedComic updatedComic = new UpdatedComic();
+        updatedComic.setId(7L);
+        updatedComic.setNewName("Marrrvel");
+        comicController.updateComic(updatedComic);
+        Comic comic = comicRepository.findByName(updatedComic.getNewName()).
+                orElseThrow(() -> new ComicNotFoundException("Not found..."));
+        assertEquals(comic.getName(),updatedComic.getNewName());
+    }
 }
