@@ -33,7 +33,7 @@ class CharacterControllerIT {
     }
 
     @Test
-    void getAllCharacters(){
+    void getAllCharacters() {
         assertTrue(characterController.getAll().size() > 0);
 
     }
@@ -75,6 +75,6 @@ class CharacterControllerIT {
         characterController.updateCharacter(updatedCharacter);
         Character character = characterRepository.findByName(updatedCharacter.getNewName()).
                 orElseThrow(() -> new CharacterNotFoundException("Not found..."));
-        assertEquals(character.getName(),updatedCharacter.getNewName());
+        assertEquals(character.getName(), updatedCharacter.getNewName());
     }
 }

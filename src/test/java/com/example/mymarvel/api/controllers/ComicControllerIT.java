@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
-
 class ComicControllerIT {
 
     @Autowired
@@ -34,6 +33,7 @@ class ComicControllerIT {
     public ComicControllerIT() {
 
     }
+
     @Test
     void getAllComics() {
         boolean flag = comicController.getAll().size() > 0;
@@ -62,7 +62,7 @@ class ComicControllerIT {
         comicController.saveComic(comicDto);
         Comic comic = comicRepository.findByName("Marrrvel").
                 orElseThrow(() -> new ComicNotFoundException("Comic not found..."));
-        assertEquals("Marrrvel",comic.getName());
+        assertEquals("Marrrvel", comic.getName());
 
     }
 
@@ -82,6 +82,6 @@ class ComicControllerIT {
         comicController.updateComic(updatedComic);
         Comic comic = comicRepository.findByName(updatedComic.getNewName()).
                 orElseThrow(() -> new ComicNotFoundException("Not found..."));
-        assertEquals(comic.getName(),updatedComic.getNewName());
+        assertEquals(comic.getName(), updatedComic.getNewName());
     }
 }
