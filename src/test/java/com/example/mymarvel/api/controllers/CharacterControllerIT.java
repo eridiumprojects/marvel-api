@@ -7,20 +7,16 @@ import com.example.mymarvel.domain.character.CharacterRepository;
 import com.example.mymarvel.domain.character.CharacterService;
 import com.example.mymarvel.exceptions.CharacterNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.transaction.Transactional;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Transactional
+@SpringBootTest
 class CharacterControllerIT {
+
     @Autowired
     private CharacterController characterController;
     @Autowired
@@ -29,13 +25,10 @@ class CharacterControllerIT {
     public CharacterService characterService;
 
 
-    public CharacterControllerIT() {
-    }
-
     @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./huy/parasha/zhopa.sql")
     void getAllCharacters() {
         assertTrue(characterController.getAll().size() > 0);
-
     }
 
     @Test
@@ -52,7 +45,7 @@ class CharacterControllerIT {
     void saveCharacter() {
         CharacterDto characterDto = new CharacterDto();
         characterDto.setName("Aboba");
-        characterDto.setComicId(7L);
+        characterDto.setComicId(5L);
         characterController.saveCharacter(characterDto);
         Character character = characterRepository.findByName("Aboba").
                 orElseThrow(() -> new CharacterNotFoundException("Can't find character..."));

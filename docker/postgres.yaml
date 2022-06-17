@@ -8,4 +8,4 @@ services:
     environment:
       POSTGRES_PASSWORD: toor # user postgres
     ports:
-      - "5432:5432"
+      - "5444:5432"

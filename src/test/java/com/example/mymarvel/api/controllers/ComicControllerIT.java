@@ -18,10 +18,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Transactional
-class ComicControllerIT {
+@SpringBootTest
+class
+ComicControllerIT {
 
     @Autowired
     private ComicController comicController;
@@ -30,9 +29,6 @@ class ComicControllerIT {
     @Autowired
     private ComicRepository comicRepository;
 
-    public ComicControllerIT() {
-
-    }
 
     @Test
     void getAllComics() {
@@ -42,12 +38,12 @@ class ComicControllerIT {
 
     @Test
     void getComic() {
-        assertEquals(7L, comicController.getComic(7L).getId());
+        assertEquals(4L, comicController.getComic(4L).getId());
     }
 
     @Test
     void getCharacters() {
-        boolean flag = comicController.getCharacters(7L).size() != 0;
+        boolean flag = comicController.getCharacters(4L).size() != 0;
         assertTrue(flag);
 
     }
@@ -69,7 +65,7 @@ class ComicControllerIT {
     @Test
     void deleteComic() {
         boolean flag;
-        comicController.deleteComic(7L);
+        comicController.deleteComic(4L);
         flag = true;
         assertTrue(flag);
     }
@@ -77,7 +73,7 @@ class ComicControllerIT {
     @Test
     void updateComic() {
         UpdatedComic updatedComic = new UpdatedComic();
-        updatedComic.setId(7L);
+        updatedComic.setId(4L);
         updatedComic.setNewName("Marrrvel");
         comicController.updateComic(updatedComic);
         Comic comic = comicRepository.findByName(updatedComic.getNewName()).
