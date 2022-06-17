@@ -27,7 +27,7 @@ public class Character {
     @Column(name = "name", unique = true, nullable = false, length = 100)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "comic_character__fk",
             joinColumns = @JoinColumn(name = "character_id"),

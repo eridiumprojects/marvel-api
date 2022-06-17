@@ -29,7 +29,7 @@ public class Comic {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
-            CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "comic_character__fk",
             joinColumns = @JoinColumn(name = "comic_id"),

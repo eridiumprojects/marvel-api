@@ -48,15 +48,17 @@ class CharacterControllerIT {
     }
 
     @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/save_embed.sql")
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void saveCharacter() {
         CharacterDto characterDto = new CharacterDto();
         characterDto.setName("Aboba");
+        characterDto.setComicId(1L);
         CharacterView characterView = characterController.saveCharacter(characterDto);
         characterDto.setComicId(characterView.getId());
         Character character = characterRepository.findByName(characterDto.getName()).
                 orElseThrow(() -> new CharacterNotFoundException("Can't find character..."));
-        assertEquals(characterDto.getName(), character.getName());
+        assertEquals(character.getName(),characterDto.getName());
     }
 
     @Test
