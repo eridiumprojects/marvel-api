@@ -1,6 +1,7 @@
 package com.example.mymarvel.api.controllers;
 
 import com.example.mymarvel.api.dtos.CharacterDto;
+import com.example.mymarvel.api.dtos.CharacterView;
 import com.example.mymarvel.api.dtos.UpdatedCharacter;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterRepository;
@@ -51,8 +52,8 @@ class CharacterControllerIT {
     void saveCharacter() {
         CharacterDto characterDto = new CharacterDto();
         characterDto.setName("Aboba");
-        characterDto.setComicId(1L);
-        characterController.saveCharacter(characterDto);
+        CharacterView characterView = characterController.saveCharacter(characterDto);
+        characterDto.setComicId(characterView.getId());
         Character character = characterRepository.findByName(characterDto.getName()).
                 orElseThrow(() -> new CharacterNotFoundException("Can't find character..."));
         assertEquals(characterDto.getName(), character.getName());

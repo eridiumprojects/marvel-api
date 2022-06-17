@@ -27,11 +27,11 @@ public class CharacterService {
         return characterRepository.findAll();
     }
 
-    public void save(Character character) {
+    public Character save(Character character) {
         Comic comic = comicService.getComic(character.getComics().get(0).getId());
         character.setComics(Collections.singletonList(comic));
         isNameUnique(character.getName());
-        characterRepository.save(character);
+       return characterRepository.save(character);
     }
 
     public void isNameUnique(String name) {
