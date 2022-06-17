@@ -26,44 +26,54 @@ class CharacterControllerIT {
 
 
     @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./huy/parasha/zhopa.sql")
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/embed.sql")
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void getAllCharacters() {
         assertTrue(characterController.getAll().size() > 0);
     }
 
     @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/embed.sql")
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void getCharacter() {
-        assertEquals(15L, characterController.getCharacter(15L).getId());
+        assertEquals(1L, characterController.getCharacter(1L).getId());
     }
 
     @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/embed.sql")
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void getComics() {
-        assertTrue(characterController.getComics(28L).size() != 0);
+        assertTrue(characterController.getComics(1L).size() != 0);
     }
 
     @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void saveCharacter() {
         CharacterDto characterDto = new CharacterDto();
         characterDto.setName("Aboba");
-        characterDto.setComicId(5L);
+        characterDto.setComicId(1L);
         characterController.saveCharacter(characterDto);
-        Character character = characterRepository.findByName("Aboba").
+        Character character = characterRepository.findByName(characterDto.getName()).
                 orElseThrow(() -> new CharacterNotFoundException("Can't find character..."));
-        assertEquals("Aboba", character.getName());
+        assertEquals(characterDto.getName(), character.getName());
     }
 
     @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/embed.sql")
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void deleteCharacter() {
         boolean flag;
-        characterController.deleteCharacter(29L);
+        characterController.deleteCharacter(1L);
         flag = true;
         assertTrue(flag);
     }
 
     @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/embed.sql")
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void updateCharacter() {
         UpdatedCharacter updatedCharacter = new UpdatedCharacter();
-        updatedCharacter.setId(28L);
+        updatedCharacter.setId(1L);
         updatedCharacter.setNewName("Papa");
         characterController.updateCharacter(updatedCharacter);
         Character character = characterRepository.findByName(updatedCharacter.getNewName()).
