@@ -48,12 +48,12 @@ public class ComicController {
         comicService.save(comicMapper.toComic(comicDto));
     }
 
-    @DeleteMapping(value = "delete/{comicId}", produces = "application/json")
+    @DeleteMapping(value = "/delete/{comicId}", produces = "application/json")
     public void deleteComic(@PathVariable Long comicId) {
         comicService.delete(comicService.getComic(comicId));
     }
 
-    @PutMapping(value = "/update", produces = "application/json")
+    @PutMapping(value = "/{}/update", produces = "application/json")
     public void updateComic(@Valid @RequestBody UpdatedComic updatedComic) {
         comicService.update(updatedComic);
     }

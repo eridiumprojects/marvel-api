@@ -24,7 +24,7 @@ public class CharacterMapper {
     }
 
     public List<CharacterView> toViews(List<Character> characters) {
-        if (characters == null){
+        if (characters == null) {
             return Collections.emptyList();
         }
         return characters.stream().map(this::toView).toList();

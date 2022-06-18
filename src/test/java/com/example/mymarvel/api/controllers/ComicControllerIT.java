@@ -14,8 +14,8 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class
 ComicControllerIT {
@@ -72,10 +72,8 @@ ComicControllerIT {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/embed.sql")
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void deleteComic() {
-        boolean flag;
         comicController.deleteComic(4L);
-        flag = true;
-        assertTrue(flag);
+        assertThrows(ComicNotFoundException.class, () -> comicController.getComic(4L));
     }
 
     @Test

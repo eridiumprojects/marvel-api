@@ -9,7 +9,6 @@ import com.example.mymarvel.api.mappers.ComicMapper;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterRepository;
 import com.example.mymarvel.domain.character.CharacterService;
-import com.example.mymarvel.domain.comic.Comic;
 import com.example.mymarvel.domain.comic.ComicRepository;
 import com.example.mymarvel.domain.comic.ComicService;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,7 @@ public class CharacterController {
 
     @PostMapping(value = "", consumes = "application/json", produces = "application/json")
     public CharacterView saveCharacter(@Valid @RequestBody CharacterDto characterDto) {
-       return characterMapper.toView( characterService.save(characterMapper.toCharacter(characterDto)));
+        return characterMapper.toView(characterService.save(characterMapper.toCharacter(characterDto)));
     }
 
     @DeleteMapping(value = "/delete/{characterId}", produces = "application/json")
@@ -58,7 +57,6 @@ public class CharacterController {
     @PutMapping(value = "/update", produces = "application/json")
     public void updateCharacter(@Valid @RequestBody UpdatedCharacter updatedCharacter) {
         characterService.update(updatedCharacter);
-
     }
 
 }

@@ -16,7 +16,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ComicService {
     private final ComicRepository comicRepository;
-    private final CharacterRepository characterRepository;
     private final ApplicationEventPublisher publisher;
 
     public Comic getComic(Long id) {
