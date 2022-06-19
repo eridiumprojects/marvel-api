@@ -44,8 +44,8 @@ public class ComicController {
     }
 
     @PostMapping(value = "", consumes = "application/json")
-    public void saveComic(@Valid @RequestBody ComicDto comicDto) {
-        comicService.save(comicMapper.toComic(comicDto));
+    public ComicView saveComic(@Valid @RequestBody ComicDto comicDto) {
+        return comicMapper.toView(comicService.save(comicMapper.toComic(comicDto)));
     }
 
     @DeleteMapping(value = "/delete/{comicId}", produces = "application/json")

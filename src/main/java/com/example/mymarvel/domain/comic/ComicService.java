@@ -27,10 +27,10 @@ public class ComicService {
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
-    public void save(Comic comic) {
+    public Comic save(Comic comic) {
         publisher.publishEvent(new ComicSaveEvent(comic));
         isNameUnique(comic.getName());
-        comicRepository.save(comic);
+        return comicRepository.save(comic);
     }
 
     @Transactional
