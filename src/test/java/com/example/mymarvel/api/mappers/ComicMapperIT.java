@@ -3,7 +3,6 @@ package com.example.mymarvel.api.mappers;
 import com.example.mymarvel.api.dtos.ComicDto;
 import com.example.mymarvel.api.dtos.ComicView;
 import com.example.mymarvel.domain.comic.Comic;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -13,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ComicMapperIT {
-    private ComicMapper comicMapper = new ComicMapper();
+    private final ComicMapper comicMapper = new ComicMapper();
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/embed.sql")

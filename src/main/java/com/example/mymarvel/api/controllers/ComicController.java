@@ -39,7 +39,7 @@ public class ComicController {
     }
 
     @GetMapping(value = "/{comicId}/characters", produces = "application/json")
-    public List<CharacterView> getCharacters(@PathVariable Long comicId){
+    public List<CharacterView> getCharacters(@PathVariable Long comicId) {
         return characterMapper.toViews(characterRepository.getCharactersByComicsId(comicId));
     }
 
@@ -53,8 +53,8 @@ public class ComicController {
         comicService.delete(comicService.getComic(comicId));
     }
 
-    @PutMapping(value = "/{}/update", produces = "application/json")
-    public void updateComic(@Valid @RequestBody UpdatedComic updatedComic) {
-        comicService.update(updatedComic);
+    @PutMapping(value = "/update/{comicId}", produces = "application/json")
+    public void updateComic(@PathVariable Long comicId, @Valid @RequestBody UpdatedComic updatedComic) {
+        comicService.update(comicId, updatedComic);
     }
 }

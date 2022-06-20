@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CharacterMapperIT {
 
-  private CharacterMapper characterMapper =  new CharacterMapper();
+  private final CharacterMapper characterMapper =  new CharacterMapper();
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/embed.sql")
@@ -45,8 +45,8 @@ class CharacterMapperIT {
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void toCharacter() {
         CharacterDto characterDto = new CharacterDto();
-        characterDto.setName("Abobaa");
-        characterDto.setComicId(1L);
+        characterDto.setName("Spider-man");
+        characterDto.setComicId(List.of(1L));
         Character character = characterMapper.toCharacter(characterDto);
         assertEquals(character.getName(),characterDto.getName());
 

@@ -3,8 +3,11 @@ package com.example.mymarvel.api.controllers;
 import com.example.mymarvel.api.dtos.CharacterView;
 import com.example.mymarvel.api.dtos.ComicDto;
 import com.example.mymarvel.api.dtos.UpdatedComic;
+import com.example.mymarvel.domain.character.Character;
+import com.example.mymarvel.domain.character.CharacterRepository;
 import com.example.mymarvel.domain.comic.Comic;
 import com.example.mymarvel.domain.comic.ComicRepository;
+import com.example.mymarvel.exceptions.CharacterNotFoundException;
 import com.example.mymarvel.exceptions.ComicNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,8 @@ ComicControllerIT {
     private CharacterController characterController;
     @Autowired
     private ComicRepository comicRepository;
+    @Autowired
+    private CharacterRepository characterRepository;
 
 
     @Test
@@ -81,11 +86,11 @@ ComicControllerIT {
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void updateComic() {
         UpdatedComic updatedComic = new UpdatedComic();
-        updatedComic.setId(1L);
-        updatedComic.setNewName("Marrrvel");
-        comicController.updateComic(updatedComic);
-        Comic comic = comicRepository.findByName(updatedComic.getNewName()).
+        updatedComic.setCharacterNames(List.of("Spider-man","Batman"));
+        Long comicId = 1L;
+        comicController.updateComic(comicId,updatedComic);
+        Comic comic = comicRepository.findById(comicId).
                 orElseThrow(() -> new ComicNotFoundException("Not found..."));
-        assertEquals(comic.getName(), updatedComic.getNewName());
+        assertEquals(updatedComic.getCharacterNames().size(),comic.getCharacters().size());
     }
 }

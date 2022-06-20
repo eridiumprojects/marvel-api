@@ -5,7 +5,7 @@ public class GeneralException extends RuntimeException {
         super(message);
     }
 
-    public GeneralException(){
+    public GeneralException() {
         super();
     }
 }

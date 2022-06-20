@@ -1,17 +1,18 @@
 package com.example.mymarvel.domain.character;
 
 import com.example.mymarvel.api.dtos.UpdatedCharacter;
-import com.example.mymarvel.exceptions.CharacterNotFoundException;
 import com.example.mymarvel.domain.comic.Comic;
+import com.example.mymarvel.domain.comic.ComicRepository;
 import com.example.mymarvel.domain.comic.ComicService;
-import com.example.mymarvel.exceptions.ComicAlreadyExistException;
+import com.example.mymarvel.exceptions.CharacterAlreadyExistException;
+import com.example.mymarvel.exceptions.CharacterNotFoundException;
+import com.example.mymarvel.exceptions.ComicNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +20,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CharacterService {
     private final CharacterRepository characterRepository;
+    private final ComicRepository comicRepository;
     private final ComicService comicService;
 
     @Transactional
     public Character getCharacter(Long id) {
-        return characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException("Not found..."));
+        return characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException("The ID with such a character was not found"));
     }
 
     @Transactional
@@ -31,37 +33,42 @@ public class CharacterService {
         return characterRepository.findAll();
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Throwable.class)
     public Character save(Character character) {
-        Comic comic = comicService.getComic(character.getComics().get(0).getId());
-        character.setComics(Collections.singletonList(comic));
         isNameUnique(character.getName());
-       return characterRepository.save(character);
+        characterRepository.save(character);
+        return character;
     }
 
+    @Transactional
     public void isNameUnique(String name) {
         Optional<Character> characterOptional = characterRepository.findByName(name);
 
         if (characterOptional.isPresent()) {
-            throw new ComicAlreadyExistException("Unique failed error.");
+            throw new CharacterAlreadyExistException("A character with that name already exists");
         }
     }
 
     @Transactional
     public void delete(Character character) {
         characterRepository.findById(character.getId()).
-                orElseThrow(() -> new CharacterNotFoundException("Not found"));
+                orElseThrow(() -> new CharacterNotFoundException("The ID with such a character was not found"));
         characterRepository.delete(character);
     }
 
     @Transactional
-    public void update(UpdatedCharacter updatedCharacter) {
-        Character character = characterRepository.
-                findById(updatedCharacter.getId()).
-                orElseThrow(() -> new CharacterNotFoundException("Not found..."));
-        isNameUnique(updatedCharacter.getNewName());
-        character.setName(updatedCharacter.getNewName());
+    public void update(Long characterId, UpdatedCharacter updatedCharacter) {
+        List<Long> listId = updatedCharacter.getComicsId();
+        Character character = characterRepository.findById(characterId).
+                orElseThrow(() -> new CharacterNotFoundException("The ID with such a character was not found"));
+        List<Comic> comicList = new ArrayList<>();
+        for (int i = 0; i < listId.size(); i++) {
+            comicList.add(comicRepository.findById(listId.get(i)).
+                    orElseThrow(() -> new ComicNotFoundException("The ID with such a character was not found")));
+        }
+        character.setComics(comicList);
         characterRepository.save(character);
+
     }
 }
 

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.LazyCollection;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
@@ -28,8 +27,8 @@ public class Comic {
     @Column(name = "name", unique = true, nullable = false, length = 100)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
-            CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,
+            CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "comic_character__fk",
             joinColumns = @JoinColumn(name = "comic_id"),

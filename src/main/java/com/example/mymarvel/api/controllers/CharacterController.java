@@ -54,9 +54,9 @@ public class CharacterController {
         characterService.delete(characterService.getCharacter(characterId));
     }
 
-    @PutMapping(value = "/update", produces = "application/json")
-    public void updateCharacter(@Valid @RequestBody UpdatedCharacter updatedCharacter) {
-        characterService.update(updatedCharacter);
+    @PutMapping(value = "/update/{characterId}", produces = "application/json")
+    public void updateCharacter(@PathVariable Long characterId, @Valid @RequestBody UpdatedCharacter updatedCharacter) {
+        characterService.update(characterId, updatedCharacter);
     }
 
 }

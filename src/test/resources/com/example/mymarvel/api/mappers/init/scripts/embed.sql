@@ -27,24 +27,6 @@
 -- );
 
 INSERT INTO comics(id,name)
-VALUES (1,'DC'),
-       (2,'Marvel'),
-       (3,'Konoha'),
-       (4,'Deleted-comic');
-
-INSERT INTO characters(id,name)
-VALUES (1,'Spider-man'),
-       (2,'Batman'),
-       (3,'Jocker'),
-       (4,'Iron-Man');
-
-INSERT INTO comic_character__fk(comic_id, character_id)
-VALUES (1,1),
-       (1,2),
-       (2,3),
-       (3,4);
-
-
-
+VALUES (1,'DC');
 
 

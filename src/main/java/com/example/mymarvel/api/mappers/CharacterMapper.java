@@ -2,17 +2,23 @@ package com.example.mymarvel.api.mappers;
 
 import com.example.mymarvel.api.dtos.CharacterDto;
 import com.example.mymarvel.api.dtos.CharacterView;
-import com.example.mymarvel.api.dtos.UpdatedCharacter;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.comic.Comic;
+import com.example.mymarvel.domain.comic.ComicRepository;
+import com.example.mymarvel.exceptions.ComicNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Component
 public class CharacterMapper {
+    @Autowired
+    public ComicRepository comicRepository;
+
     public CharacterView toView(Character character) {
         if (character == null) {
             return null;
@@ -36,7 +42,13 @@ public class CharacterMapper {
         }
         Character character = new Character();
         character.setName(characterDto.getName());
-        character.setComics(Collections.singletonList(new Comic().setId(characterDto.getComicId())));
+        List<Comic> list = new ArrayList<>();
+        int count = characterDto.getComicId().size();
+        for (int i = 0; i < count; i++) {
+            list.add(comicRepository.findById(characterDto.getComicId().get(i)).
+                    orElseThrow(() -> new ComicNotFoundException("The ID with such a character was not found")));
+        }
+        character.setComics(list);
         return character;
     }
 

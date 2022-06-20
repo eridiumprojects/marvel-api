@@ -1,16 +1,17 @@
 package com.example.mymarvel.api.controllers;
 
 import com.example.mymarvel.api.dtos.CharacterDto;
-import com.example.mymarvel.api.dtos.CharacterView;
 import com.example.mymarvel.api.dtos.UpdatedCharacter;
 import com.example.mymarvel.domain.character.Character;
 import com.example.mymarvel.domain.character.CharacterRepository;
-import com.example.mymarvel.domain.character.CharacterService;
+import com.example.mymarvel.domain.comic.ComicRepository;
 import com.example.mymarvel.exceptions.CharacterNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,8 +23,9 @@ class CharacterControllerIT {
     private CharacterController characterController;
     @Autowired
     private CharacterRepository characterRepository;
+
     @Autowired
-    public CharacterService characterService;
+    public ComicRepository comicRepository;
 
 
     @Test
@@ -52,13 +54,12 @@ class CharacterControllerIT {
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void saveCharacter() {
         CharacterDto characterDto = new CharacterDto();
-        characterDto.setName("Aboba");
-        characterDto.setComicId(1L);
-        CharacterView characterView = characterController.saveCharacter(characterDto);
-        characterDto.setComicId(characterView.getId());
+        characterDto.setName("Spider-man");
+        characterDto.setComicId(List.of(1L));
+        characterController.saveCharacter(characterDto);
         Character character = characterRepository.findByName(characterDto.getName()).
                 orElseThrow(() -> new CharacterNotFoundException("Can't find character..."));
-        assertEquals(character.getName(),characterDto.getName());
+        assertEquals(characterDto.getName(),character.getName());
     }
 
     @Test
@@ -77,11 +78,11 @@ class CharacterControllerIT {
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void updateCharacter() {
         UpdatedCharacter updatedCharacter = new UpdatedCharacter();
-        updatedCharacter.setId(1L);
-        updatedCharacter.setNewName("Papa");
-        characterController.updateCharacter(updatedCharacter);
-        Character character = characterRepository.findByName(updatedCharacter.getNewName()).
+        updatedCharacter.setComicsId(List.of(1L,2L));
+        Long characterId = 1L;
+        characterController.updateCharacter(characterId,updatedCharacter);
+        Character character = characterRepository.findById(characterId).
                 orElseThrow(() -> new CharacterNotFoundException("Not found..."));
-        assertEquals(character.getName(), updatedCharacter.getNewName());
+        assertEquals(updatedCharacter.getComicsId().size(), character.getComics().size());
     }
 }
