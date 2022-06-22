@@ -28,15 +28,14 @@ public class DbInit {
     @PostConstruct
     private void postInit() {
         ComicDto comicDto = new ComicDto();
-        comicDto.setName("Hagwarts");
-        comicDto.setCharacterNames(List.of("Ran", "Germion"));
+        comicDto.setName("Staki");
+        comicDto.setCharacterNames(List.of("2bet", "GenaiyBet"));
         comicController.saveComic(comicDto);
         Comic comic = comicRepository.findByName(comicDto.getName()).orElseThrow(() ->
                 new ComicNotFoundException("Not found..."));
         id = comic.getId();
         characters = characterRepository.getCharactersByComicsId(comic.getId());
     }
-
     @PreDestroy
     private void preDestroy() {
         comicController.deleteComic(id);

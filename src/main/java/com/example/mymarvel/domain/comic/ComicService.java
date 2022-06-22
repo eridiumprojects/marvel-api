@@ -9,7 +9,9 @@ import com.example.mymarvel.exceptions.CharacterNotFoundException;
 import com.example.mymarvel.exceptions.ComicAlreadyExistException;
 import com.example.mymarvel.exceptions.ComicNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,6 +28,8 @@ public class ComicService {
     private final CharacterRepository characterRepository;
     private final ApplicationEventPublisher publisher;
 
+    @Autowired
+    KafkaTemplate<String, String> kafkaTemplate;
 
     @Transactional
     public Comic getComic(Long id) {
@@ -38,6 +42,7 @@ public class ComicService {
         publisher.publishEvent(new ComicSaveEvent(comic));
         isNameUnique(comic.getName());
         isCharactersUnique(comic.getCharacters());
+        kafkaTemplate.send("Comic",comic.toString());
         return comicRepository.save(comic);
     }
 
@@ -46,6 +51,7 @@ public class ComicService {
         return comicRepository.findAll();
     }
 
+    @Transactional
     public void isNameUnique(String name) {
         Optional<Comic> comicOptional = comicRepository.findByName(name);
         if (comicOptional.isPresent()) {

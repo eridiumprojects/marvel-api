@@ -50,3 +50,4 @@ public class Comic {
         return Objects.hash(name, characters);
     }
 }
+

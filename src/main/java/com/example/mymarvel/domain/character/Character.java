@@ -3,7 +3,6 @@ package com.example.mymarvel.domain.character;
 import com.example.mymarvel.domain.comic.Comic;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.springframework.context.annotation.Lazy;
 
@@ -17,7 +16,6 @@ import java.util.Objects;
 @Accessors(chain = true)
 @Entity(name = "character")
 @Table(name = "characters")
-@ToString
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,5 +45,13 @@ public class Character {
     @Override
     public int hashCode() {
         return Objects.hash(name, comics);
+    }
+
+    public String toString() {
+        return "Character(id=" + this.getId() + ", name=" + this.getName() + ", comics=" + this.getComicList() + ")";
+    }
+
+    private String getComicList() {
+        return getComics().stream().map(Comic::getName).toList().toString();
     }
 }
