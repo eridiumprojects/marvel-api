@@ -26,13 +26,14 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 class CharacterMapperIT {
 
-    private final CharacterMapper characterMapper =  new CharacterMapper();
+    private final CharacterMapper characterMapper = new CharacterMapper();
 
     @Mock
     private ComicRepository comicRepository;
 
     @InjectMocks
     Character character = new Character();
+
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "./init/scripts/embed.sql")
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
@@ -41,7 +42,7 @@ class CharacterMapperIT {
         character.setId(1L);
         character.setName("Aboba");
         CharacterView characterView = characterMapper.toView(character);
-        assertEquals(characterView.getName(),character.getName());
+        assertEquals(characterView.getName(), character.getName());
     }
 
     @Test
@@ -54,7 +55,7 @@ class CharacterMapperIT {
         character1.setId(1L);
         characters.add(character1);
         List<CharacterView> characterViews = characterMapper.toViews(characters);
-        assertEquals(characterViews.get(0).getName(),(characters.get(0).getName()));
+        assertEquals(characterViews.get(0).getName(), (characters.get(0).getName()));
 
     }
 
@@ -69,6 +70,6 @@ class CharacterMapperIT {
 
         when(comicRepository.findById(any())).thenReturn(Optional.of(optionalComic));
         Character character = characterMapper.toCharacter(characterDto);
-        assertEquals(character.getComics().get(0).getId(),optionalComic.getId());
+        assertEquals(character.getComics().get(0).getId(), optionalComic.getId());
     }
 }
