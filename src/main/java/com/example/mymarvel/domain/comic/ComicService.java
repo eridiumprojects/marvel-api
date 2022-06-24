@@ -42,7 +42,7 @@ public class ComicService {
         publisher.publishEvent(new ComicSaveEvent(comic));
         isNameUnique(comic.getName());
         isCharactersUnique(comic.getCharacters());
-        kafkaTemplate.send("Comic",comic.toString());
+        kafkaTemplate.send("Comic", comic.toString());
         return comicRepository.save(comic);
     }
 

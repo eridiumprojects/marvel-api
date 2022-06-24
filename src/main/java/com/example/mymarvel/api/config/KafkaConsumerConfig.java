@@ -1,7 +1,6 @@
 package com.example.mymarvel.api.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +21,8 @@ public class KafkaConsumerConfig {
     private String bootstrapServices;
 
     @Bean
-    public Map<String,Object> consumerConfig() {
-        Map<String,Object> props = new HashMap<>();
+    public Map<String, Object> consumerConfig() {
+        Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServices);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -37,8 +36,8 @@ public class KafkaConsumerConfig {
 
     @Bean
     public KafkaListenerContainerFactory
-            <ConcurrentMessageListenerContainer<String,String>> factory(
-                    ConsumerFactory<String,String> consumerFactory
+            <ConcurrentMessageListenerContainer<String, String>> factory(
+            ConsumerFactory<String, String> consumerFactory
     ) {
         ConcurrentKafkaListenerContainerFactory<String, String> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();

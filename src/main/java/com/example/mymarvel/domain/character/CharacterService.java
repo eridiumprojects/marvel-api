@@ -10,8 +10,6 @@ import com.example.mymarvel.exceptions.ComicNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -31,6 +29,7 @@ public class CharacterService {
 
     @Autowired
     KafkaTemplate<String, String> kafkaTemplate;
+
     @Transactional
     public Character getCharacter(Long id) {
         return characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException("The ID with such a character was not found"));
@@ -45,7 +44,7 @@ public class CharacterService {
     public Character save(Character character) {
         isNameUnique(character.getName());
         characterRepository.save(character);
-        kafkaTemplate.send("Character",character.toString());
+        kafkaTemplate.send("Character", character.toString());
         return character;
     }
 

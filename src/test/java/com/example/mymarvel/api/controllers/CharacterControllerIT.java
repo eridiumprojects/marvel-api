@@ -59,7 +59,7 @@ class CharacterControllerIT {
         characterController.saveCharacter(characterDto);
         Character character = characterRepository.findByName(characterDto.getName()).
                 orElseThrow(() -> new CharacterNotFoundException("Can't find character..."));
-        assertEquals(characterDto.getName(),character.getName());
+        assertEquals(characterDto.getName(), character.getName());
     }
 
     @Test
@@ -78,9 +78,9 @@ class CharacterControllerIT {
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "./init/scripts/destroy.sql")
     void updateCharacter() {
         UpdatedCharacter updatedCharacter = new UpdatedCharacter();
-        updatedCharacter.setComicsId(List.of(1L,2L));
+        updatedCharacter.setComicsId(List.of(1L, 2L));
         Long characterId = 1L;
-        characterController.updateCharacter(characterId,updatedCharacter);
+        characterController.updateCharacter(characterId, updatedCharacter);
         Character character = characterRepository.findById(characterId).
                 orElseThrow(() -> new CharacterNotFoundException("Not found..."));
         assertEquals(updatedCharacter.getComicsId().size(), character.getComics().size());

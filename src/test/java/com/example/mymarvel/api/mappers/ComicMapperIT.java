@@ -9,7 +9,7 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ComicMapperIT {
     private final ComicMapper comicMapper = new ComicMapper();
@@ -22,7 +22,7 @@ class ComicMapperIT {
         comic.setName("Marvel");
         comic.setId(1L);
         ComicView comicView = comicMapper.toView(comic);
-        assertEquals(comicView.getName(),comic.getName());
+        assertEquals(comicView.getName(), comic.getName());
 
     }
 
@@ -36,7 +36,7 @@ class ComicMapperIT {
         comic1.setId(1L);
         comics.add(comic1);
         List<ComicView> comicsViews = comicMapper.toViews(comics);
-        assertEquals(comics.get(0).getName(),comicsViews.get(0).getName());
+        assertEquals(comics.get(0).getName(), comicsViews.get(0).getName());
     }
 
     @Test
@@ -47,6 +47,6 @@ class ComicMapperIT {
         comicDto.setName("DC");
         comicDto.setCharacterNames(List.of("Boba"));
         Comic comic = comicMapper.toComic(comicDto);
-        assertEquals(comic.getName(),comicDto.getName());
+        assertEquals(comic.getName(), comicDto.getName());
     }
 }
