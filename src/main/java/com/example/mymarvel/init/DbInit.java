@@ -36,6 +36,7 @@ public class DbInit {
         id = comic.getId();
         characters = characterRepository.getCharactersByComicsId(comic.getId());
     }
+
     @PreDestroy
     private void preDestroy() {
         comicController.deleteComic(id);

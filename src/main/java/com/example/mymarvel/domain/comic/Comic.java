@@ -16,7 +16,9 @@ import java.util.Objects;
 @Setter
 @Accessors(chain = true)
 @Entity(name = "comic")
-@Table(name = "comics")
+@Table(name = "comics", indexes = {
+        @Index(columnList = "name ASC", name = "comic_name")
+})
 @ToString
 public class Comic {
     @Id

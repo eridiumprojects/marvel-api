@@ -1,6 +1,7 @@
 package com.example.mymarvel.domain.character;
 
 import com.example.mymarvel.domain.comic.Comic;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -15,7 +16,10 @@ import java.util.Objects;
 @Setter
 @Accessors(chain = true)
 @Entity(name = "character")
-@Table(name = "characters")
+@Tag(name = "character", description = "The character API")
+@Table(name = "characters", indexes = {
+        @Index(columnList = "name ASC", name = "character_name"),
+})
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +27,7 @@ public class Character {
     private Long id;
 
     @Column(name = "name", unique = true, nullable = false, length = 100)
+//    @ApiModelProperty(value = "name of character", example = "Harley-Queen")
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})

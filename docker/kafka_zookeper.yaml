@@ -15,7 +15,7 @@ services:
       ZOOKEEPER_SERVERS: zookeeper:2888:3888
 
   kafka:
-  
+
     platform: "linux/amd64"
     image: confluentinc/cp-kafka:latest
     hostname: kafka
